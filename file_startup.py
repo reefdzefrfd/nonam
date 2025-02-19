@@ -15,7 +15,6 @@ def get_webhook():
 def get_startup_files():
     startup_files = []
 
-    # Vérifier le dossier de démarrage de l'utilisateur
     startup_folder = os.path.join(os.environ.get('APPDATA'), 'Microsoft\\Windows\\Start Menu\\Programs\\Startup')
     try:
         for file in os.listdir(startup_folder):
@@ -24,8 +23,7 @@ def get_startup_files():
                 startup_files.append(file_path)
     except Exception:
         pass
-    
-    # Vérifier le dossier de démarrage global
+
     global_startup_folder = os.path.join(os.environ.get('PROGRAMDATA'), 'Microsoft\\Windows\\Start Menu\\Programs\\Startup')
     try:
         for file in os.listdir(global_startup_folder):
@@ -34,8 +32,6 @@ def get_startup_files():
                 startup_files.append(file_path)
     except Exception:
         pass
-    
-    # Vérifier les clés de registre (HKEY_CURRENT_USER)
     try:
         registry_key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run")
         i = 0
